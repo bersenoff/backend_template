@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
 import routes from "./Routes";
+import db from "@db";
 
 class Server {
   app: express.Application;
@@ -34,6 +35,7 @@ class Server {
 
   public start(port: number) {
     this.app.listen(port); // запуск прослушивания порта
+    db.sync();
     console.log(`Сервер запущен на ${port} порту...`);
   }
 }

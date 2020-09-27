@@ -9,7 +9,12 @@
       "sourceMap": true,
       "outDir": "build",
       "baseUrl": "src",
-      "pretty": true
+      "pretty": true,
+      "paths": {
+        "@utils": ["Utils/index"],
+        "@api": ["API"],
+        "@db": ["DB"]
+    },
   },
   "include": [
       "src/**/*"

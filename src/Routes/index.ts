@@ -1,1 +1,3 @@
-export default [];
+import Auth from "./Auth";
+
+export default [ ...Auth ];
