@@ -1,3 +1,1 @@
-import _Auth_ from "./Auth";
-
-export const Auth = _Auth_;
+export { default as Auth } from "./Auth";
