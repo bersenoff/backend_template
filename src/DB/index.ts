@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import ModelPost from "./Post";
 import ModelSession from "./Session";
 import ModelUser from "./User";
 
@@ -10,15 +11,23 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.D
   logging: false,
 });
 
+const Post = ModelPost(db);
 const Session = ModelSession(db);
 const User = ModelUser(db);
 
 // Ассоциации
 Session.belongsTo(User, { foreignKey: "fk_user_id", targetKey: "id" });
 
+(async () => {
+  await User.sync();
+  await Session.sync();
+  await Post.sync();
+})();
+
 export default db;
 
 export { 
+  Post,
   Session, 
   User 
 };
