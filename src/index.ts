@@ -10,11 +10,14 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
+import fs from "fs";
+import https from "https";
 import routes from "./Routes";
 import db from "@db";
 
 class Server {
   app: express.Application;
+  httpsServer: https.Server;
 
   constructor() {
     this.app = express(); // создание экземпляра приложения express
@@ -25,6 +28,8 @@ class Server {
     this.app.use(cors()); // чтобы работали кроссдоменные запросы
 
     this.routing();
+    
+    this.httpsServer = https.createServer({ key: fs.readFileSync(process.env.PATH_TO_KEY), cert: fs.readFileSync(process.env.PATH_TO_CERT) }, this.app);
   }
 
   public routing() {
@@ -34,7 +39,7 @@ class Server {
   }
 
   public start(port: number) {
-    this.app.listen(port); // запуск прослушивания порта
+    this.httpsServer.listen(port); // запуск прослушивания порта
     db.sync();
     console.log(`Сервер запущен на ${port} порту...`);
   }
