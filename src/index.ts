@@ -11,12 +11,14 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
 import fs from "fs";
+import http from "http";
 import https from "https";
 import routes from "./Routes";
 import db from "@db";
 
 class Server {
   app: express.Application;
+  httpServer: http.Server;
   httpsServer: https.Server;
 
   constructor() {
@@ -24,11 +26,12 @@ class Server {
 
     this.app.use(helmet()); // скрытие express из http-заголовков
     this.app.use(cookieParser()); // парсер кук
-    this.app.use(bodyParser.json()); // парсер тела запроса
+    this.app.use(express.json({ limit: "50mb" }));
     this.app.use(cors()); // чтобы работали кроссдоменные запросы
 
     this.routing();
     
+    this.httpServer = http.createServer(this.app);
     this.httpsServer = https.createServer({ key: fs.readFileSync(process.env.PATH_TO_KEY), cert: fs.readFileSync(process.env.PATH_TO_CERT) }, this.app);
   }
 
@@ -39,7 +42,8 @@ class Server {
   }
 
   public start(port: number) {
-    this.httpsServer.listen(port); // запуск прослушивания порта
+    this.httpsServer.listen(port);
+    this.httpServer.listen(port + 1);
     db.sync();
     console.log(`Сервер запущен на ${port} порту...`);
   }

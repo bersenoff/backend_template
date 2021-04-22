@@ -7,7 +7,8 @@
  class Post extends Model {
   public id!: number;
   public title!: string;
-  public body!: string;
+  public shortContent!: string;
+  public content!: string;
   public is_deleted: boolean;
 
   public readonly created_at: Date;
@@ -23,11 +24,15 @@
       allowNull: false
     },
     title: {
-      type: new DataTypes.STRING(100),
+      type: new DataTypes.STRING(300),
       allowNull: false
     },
-    body: {
-      type: new DataTypes.TEXT,
+    short_content: {
+      type: new DataTypes.STRING(1000),
+      allowNull: false
+    },  
+    content: {
+      type: new DataTypes.TEXT('long'),
       allowNull: false
     },
     is_deleted: {
