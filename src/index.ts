@@ -8,7 +8,6 @@ import "module-alias/register";
 import express from "express";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
 import cors from "cors";
 import fs from "fs";
 import http from "http";
@@ -27,7 +26,8 @@ class Server {
     this.app.use(helmet()); // скрытие express из http-заголовков
     this.app.use(cookieParser()); // парсер кук
     this.app.use(express.json({ limit: "50mb" }));
-    this.app.use(cors()); // чтобы работали кроссдоменные запросы
+
+    this.app.use(cors());
 
     this.routing();
     

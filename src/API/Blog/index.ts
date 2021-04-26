@@ -5,6 +5,20 @@
 import { Post } from "@db";
 
 class Blog {
+  public async edit(id: number, title: string, short_content: string, content: string) {
+    const [result] = await Post.update({
+      title,
+      short_content,
+      content
+    }, {
+      where: { id }
+    });
+
+    if (result < 1) throw new Error("Статья не найдена");
+
+    return true;
+  }
+
   public async create(title: string, short_content: string, content: string) {
     return await Post.create({ title, short_content, content });
   }
