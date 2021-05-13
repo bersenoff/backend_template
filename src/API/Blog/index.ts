@@ -24,7 +24,7 @@ class Blog {
   }
 
   public async getList(limit: number = 20, offset: number = 0) {
-    return await Post.findAll({ limit, offset });
+    return await Post.findAll({ limit, offset, order: [["created_at", "DESC"]] });
   }
 
   public async getPost(id: number) {
